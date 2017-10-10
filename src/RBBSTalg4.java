@@ -141,6 +141,7 @@ public class RBBSTalg4<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public Value get(Key key) {
+        //TODO Count number of compares made
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
         return get(root, key);
     }
@@ -182,6 +183,7 @@ public class RBBSTalg4<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+        //TODO Count number of compares made
         if (key == null) throw new IllegalArgumentException("first argument to put() is null");
         if (val == null) {
             delete(key);
