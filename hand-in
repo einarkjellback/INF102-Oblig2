@@ -1,1 +1,5 @@
 Hand-in for compulsory assignment 2
+
+***Compare comparisons used with Ternary Search and Binary Search***
+The class searchCompare is the main class used to answer this question. I chose to copy and modify the RedBlackBST and
+BST classes from the alg4.jar library.
