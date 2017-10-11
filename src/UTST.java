@@ -1,87 +1,100 @@
-package searching.elementarySymbolTables;
-
 import edu.princeton.cs.algs4.In; import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.Queue;
 
 // an incomplete implementation of unbalanced ternary trees,
 // to be used (and modified) in a compulsory exercise 
 // no values, no delete, all internal nodes are 3-nodes
 
-public class UTST<Key extends Comparable<Key>> {
+public class UTST<Key extends Comparable<Key>, Value> {
 
-private Node root;
+  private Node root;
 
-private class Node{
-  private Key key1; 
-  private Key key2;
-  private Node left, mid, right;
-  public Node(Key k1, Key k2, Node l, Node m, Node r){
-    key1 = k1;
-    key2 = k2;
-    assert key1 != null && (key2 == null || key1.compareTo(key2) < 0);
-    left = l;
-    mid = m;
-    right = r;
-    assert key2 != null || mid==null ;
-  }
-}
+  private class Node {
+    private Key hiKey, loKey;
+    private Value hiVal, loVal;
+    private Node left, mid, right;
 
-public void show(){ show(root); }
-private void show(Node r){// depth-first left-to-right tree transversal
-  if (r != null) {
-    show(r.left);
-    StdOut.println(r.key1);
-    show(r.mid);
-    StdOut.println(r.key2);
-    show(r.right); }
-}
-
-public Node get(Key k){ return get(k,root); }
-public Node get(Key k, Node r){
-  assert k != null; // defensive, not required
-  if (r == null) return null;
-  int cmp = k.compareTo(r.key1);
-  if (cmp == 0) return r;
-  if (cmp < 0) return get(k, r.left);
-  // now we know cmp>0
-  if (r.key2 == null) return get(k, r.right);
-  // now we know r.key2!=null
-  cmp = k.compareTo(r.key2);
-  if (cmp == 0) return r;
-  if (cmp < 0) return get(k, r.mid);
-  return get(k, r.right);
-}
-
-
-public void put(Key k) { root = put(k, root); }
-private Node put(Key k, Node r) { 
-  if (r == null) { return new Node(k, null, null, null, null); }
-  int cmp = k.compareTo(r.key1);
-  if (cmp == 0) { return r; }
-  if (cmp < 0) { 
-    if (r.key2 != null) { r.left = put(k, r.left); }
-    else { r.key2 = r.key1; r.key1 = k ; }
-  }
-  else {
-    if (r.key2 != null) { 
-       cmp = k.compareTo(r.key2);
-       if (cmp == 0) { return r; }
-       if (cmp < 0) { r.mid = put(k, r.mid); }
-       else { r.right = put(k, r.right); }
+    //loKey is forbidden to be null, but hiKey may be null.
+    public Node(Key k1, Value v1, Key k2, Value v2, Node l, Node m, Node r) {
+      loKey = k1;
+      loVal = v1;
+      hiKey = k2;
+      hiVal = v2;
+      if (loKey == null || (hiKey != null && loKey.compareTo(hiKey) > 0)) {
+        exchange(hiKey, loKey);
+        exchange(hiVal, loVal);
+      }
+      assert loKey != null && (hiKey == null || loKey.compareTo(hiKey) < 0);
+      left = l;
+      mid = m;
+      right = r;
+      if (hiKey == null && mid != null) { throw new IllegalArgumentException("If exactly one key is null the mid node must also be null"); }
+      assert hiKey != null || mid == null;
     }
-    else { r.key2 = k; }
   }
-  return r;
-}
 
-public static void main(String[] args)  { 
-  UTST<String> st = new UTST<String>();
-  In infile = new In(args[0]);
-  while (!infile.isEmpty()) {
-    String key = infile.readString(); 
-    st.put(key);
+  private void exchange(Object v1, Object v2) {
+    Object temp = v1;
+    v1 = v2;
+    v2 = temp;
   }
-  st.show();
-}//End of main
 
+  public void show(){ show(root); }
+
+  private void show(Node r){// depth-first left-to-right tree transversal
+    if (r != null) {
+      show(r.left);
+      StdOut.println(r.hiKey);
+      show(r.mid);
+      StdOut.println(r.loKey);
+      show(r.right);
+    }
+  }
+
+  public Value get(Key k){ return get(k, root); }
+
+  private Value get(Key k, Node r){
+    if (k == null) throw new IllegalArgumentException("Key should not be null");
+    if (r == null) return null;
+    int cmp = k.compareTo(r.loKey);
+    if (cmp == 0) return r.loVal;
+    if (cmp < 0) return get(k, r.left);
+    if (r.hiKey == null) return get(k, r.right);
+    cmp = k.compareTo(r.hiKey);
+    if (cmp == 0) return r.hiVal;
+    if (cmp > 0) return get(k, r.right);
+    return get(k, r.mid);
+  }
+
+  public void put(Key k, Value v) { root = put(k, v, root); }
+
+  private Node put(Key k, Value v, Node r) {
+    if (r == null) { return new Node(k, v, null, null, null, null, null); }
+    int cmp = k.compareTo(r.loKey);
+    if (cmp == 0) {
+      r.loVal = v;
+      return r;
+    } else if (cmp < 0) { r.left = put(k, v, r.left); }
+    if (r.hiKey == null) {
+      r.hiKey = k;
+      r.hiVal = v;
+      return r;
+    }
+    cmp = k.compareTo(r.hiKey);
+    if (cmp == 0) {
+      r.loVal = v;
+      return r;
+    } else if (cmp > 0) { r.right = put(k, v, r.right); }
+    return r;
+  }
+/*
+  public static void main(String[] args)  {
+    UTST<String, Integer> st = new UTST<String, Integer>();
+    In infile = new In(args[0]);
+    while (!infile.isEmpty()) {
+      String key = infile.readString();
+      st.put(key);
+    }
+    st.show();
+  }//End of main
+  */
 }//End of UTST

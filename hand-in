@@ -1,5 +1,8 @@
 Hand-in for compulsory assignment 2
 
 ***Compare comparisons used with Ternary Search and Binary Search***
-The class searchCompare is the main class used to answer this question. I chose to copy and modify the RedBlackBST and
-BST classes from the alg4.jar library.
+The class searchCompare is the main class used to answer this question.
+Things to comment on:
+    1. Removed the size method in UBST. Only used in put to recalculate size.
+    2. Change from key1 to hiKey and key2 to loKey to emphasize relation between keys.
+    3. loKey can never be null, but hiKey can be null.
