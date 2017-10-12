@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class searchCompare {
     public static void main(String[] args) {
         try {
-            Scanner in = new Scanner(new File("thoughtTrain.txt"));
+            Scanner in = new Scanner(new File("train.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
