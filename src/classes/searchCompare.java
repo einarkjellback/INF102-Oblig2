@@ -1,3 +1,5 @@
+package classes;
+
 public class searchCompare {
     public static void main(String[] args) {
         UBST<String, Integer> bTree = new UBST<String, Integer>();

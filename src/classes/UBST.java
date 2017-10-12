@@ -1,3 +1,5 @@
+package classes;
+
 import edu.princeton.cs.algs4.In; import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Queue;
 
@@ -29,9 +31,12 @@ public class UBST<Key extends Comparable<Key>, Value> {
     }
   }
 
-  public Value get(Key key){ return get(key, root); }
+  public Value get(Key k) {
+    if (k == null) throw new IllegalArgumentException("Key should not be null");
+    return get(k, root);
+  }
 
-  private Value get(Key k, Node r){
+  private Value get(Key k, Node r) {
     if (r == null) return null;
     int cmp = k.compareTo(r.key);
     if (cmp == 0) return r.value;
@@ -39,10 +44,14 @@ public class UBST<Key extends Comparable<Key>, Value> {
     else return get(k, r.right);
   }
 
-  public void put(Key k, Value v) { root = put(k, v, root); }
+  public void put(Key k, Value v) {
+    if (v == null) throw new IllegalArgumentException("Value of a key cannot be null");
+    if (k == null) throw new IllegalArgumentException("Key should not be null.");
+    root = put(k, v, root);
+  }
 
   private Node put(Key k, Value v, Node r) {
-    if (r == null) { return new Node(k, v, null, null); }
+    if (r == null) return new Node(k, v, null, null);
     int cmp = k.compareTo(r.key);
     if (cmp == 0) {
       r.value = v;
@@ -54,7 +63,7 @@ public class UBST<Key extends Comparable<Key>, Value> {
   }
   /*
   public static void main(String[] args)  {
-    UBST<String,Integer> st = new UBST<>();
+    classes.UBST<String,Integer> st = new classes.UBST<>();
     In infile = new In(args[0]);
     while (!infile.isEmpty()) {
       String key = infile.readString();
@@ -88,4 +97,4 @@ public class UBST<Key extends Comparable<Key>, Value> {
     }
     return true;
   }
-}//End of UBST, based on Algorithms, 4th Edition, Alg. 3.2
+}//End of classes.UBST, based on Algorithms, 4th Edition, Alg. 3.2

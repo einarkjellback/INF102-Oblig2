@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/INF102-Oblig2.iml" filepath="$PROJECT_DIR$/INF102-Oblig2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../RandomObjectGenerators/src/RandomObjectGenerators.iml" filepath="$PROJECT_DIR$/../RandomObjectGenerators/src/RandomObjectGenerators.iml" />
     </modules>
   </component>
 </project>

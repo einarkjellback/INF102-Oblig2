@@ -1,3 +1,5 @@
+package classes;
+
 import edu.princeton.cs.algs4.In; import edu.princeton.cs.algs4.StdOut;
 
 // an incomplete implementation of unbalanced ternary trees,
@@ -13,7 +15,7 @@ public class UTST<Key extends Comparable<Key>, Value> {
     private Value hiVal, loVal;
     private Node left, mid, right;
 
-    //loKey is forbidden to be null, but hiKey may be null.
+    //loKey cannot be null, but hiKey may be null.
     public Node(Key k1, Value v1, Key k2, Value v2, Node l, Node m, Node r) {
       loKey = k1;
       loVal = v1;
@@ -28,7 +30,7 @@ public class UTST<Key extends Comparable<Key>, Value> {
       mid = m;
       right = r;
       if (hiKey == null && mid != null) { throw new IllegalArgumentException("If exactly one key is null the mid node must also be null"); }
-      assert hiKey != null || mid == null;
+      assert hiKey != null || (mid == null && right == null);
     }
   }
 
@@ -50,30 +52,36 @@ public class UTST<Key extends Comparable<Key>, Value> {
     }
   }
 
-  public Value get(Key k){ return get(k, root); }
-
-  private Value get(Key k, Node r){
+  public Value get(Key k) {
     if (k == null) throw new IllegalArgumentException("Key should not be null");
+    return get(k, root);
+  }
+
+  private Value get(Key k, Node r) {
     if (r == null) return null;
     int cmp = k.compareTo(r.loKey);
     if (cmp == 0) return r.loVal;
     if (cmp < 0) return get(k, r.left);
-    if (r.hiKey == null) return get(k, r.right);
+    if (r.hiKey == null) return null;
     cmp = k.compareTo(r.hiKey);
     if (cmp == 0) return r.hiVal;
     if (cmp > 0) return get(k, r.right);
     return get(k, r.mid);
   }
 
-  public void put(Key k, Value v) { root = put(k, v, root); }
+  public void put(Key k, Value v) {
+    if (v == null) throw new IllegalArgumentException("Value of a key cannot be null");
+    if (k == null) throw new IllegalArgumentException("Key should not be null");
+    root = put(k, v, root);
+  }
 
   private Node put(Key k, Value v, Node r) {
-    if (r == null) { return new Node(k, v, null, null, null, null, null); }
+    if (r == null) return new Node(k, v, null, null, null, null, null);
     int cmp = k.compareTo(r.loKey);
     if (cmp == 0) {
       r.loVal = v;
       return r;
-    } else if (cmp < 0) { r.left = put(k, v, r.left); }
+    } else if (cmp < 0) r.left = put(k, v, r.left);
     if (r.hiKey == null) {
       r.hiKey = k;
       r.hiVal = v;
@@ -83,12 +91,12 @@ public class UTST<Key extends Comparable<Key>, Value> {
     if (cmp == 0) {
       r.loVal = v;
       return r;
-    } else if (cmp > 0) { r.right = put(k, v, r.right); }
-    return r;
+    } else if (cmp > 0) r.right = put(k, v, r.right);
+    return r.mid = put(k, v, r.mid);
   }
 /*
   public static void main(String[] args)  {
-    UTST<String, Integer> st = new UTST<String, Integer>();
+    classes.UTST<String, Integer> st = new classes.UTST<String, Integer>();
     In infile = new In(args[0]);
     while (!infile.isEmpty()) {
       String key = infile.readString();
@@ -97,4 +105,4 @@ public class UTST<Key extends Comparable<Key>, Value> {
     st.show();
   }//End of main
   */
-}//End of UTST
+}//End of classes.UTST
