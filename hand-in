@@ -7,3 +7,8 @@ Things to comment on:
     2. Change from key1 to hiKey and key2 to loKey to emphasize relation between keys.
     3. loKey can never be null, but hiKey can be null.
     4. Did not implement deletion since it made coding easier.
+    5. What qualifies as a comparison.
+        - Something compared to null
+        - Anything involving <, >, >=, <=, !=, ==.
+        - I don't include if statements that only throws exceptions -> comment why and how it affects the result.
+        - Don't count comparisons in Node class -> Expect UTST to use Node class correctly

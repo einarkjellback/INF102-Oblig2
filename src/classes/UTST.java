@@ -9,6 +9,7 @@ import edu.princeton.cs.algs4.In; import edu.princeton.cs.algs4.StdOut;
 public class UTST<Key extends Comparable<Key>, Value> {
 
   private Node root;
+  private long compares = 0;
 
   private class Node {
     private Key hiKey, loKey;
@@ -34,6 +35,8 @@ public class UTST<Key extends Comparable<Key>, Value> {
     }
   }
 
+  public long getCompares() { return compares; }
+
   private void exchange(Object v1, Object v2) {
     Object temp = v1;
     v1 = v2;
@@ -58,14 +61,14 @@ public class UTST<Key extends Comparable<Key>, Value> {
   }
 
   private Value get(Key k, Node r) {
-    if (r == null) return null;
-    int cmp = k.compareTo(r.loKey);
-    if (cmp == 0) return r.loVal;
-    if (cmp < 0) return get(k, r.left);
-    if (r.hiKey == null) return null;
-    cmp = k.compareTo(r.hiKey);
-    if (cmp == 0) return r.hiVal;
-    if (cmp > 0) return get(k, r.right);
+    if (r == null) return null; compares++;
+    int cmp = k.compareTo(r.loKey); compares++;
+    if (cmp == 0) return r.loVal; compares++;
+    if (cmp < 0) return get(k, r.left); compares++;
+    if (r.hiKey == null) return null; compares++;
+    cmp = k.compareTo(r.hiKey); compares++;
+    if (cmp == 0) return r.hiVal; compares++;
+    if (cmp > 0) return get(k, r.right);  compares++;
     return get(k, r.mid);
   }
 
@@ -76,22 +79,22 @@ public class UTST<Key extends Comparable<Key>, Value> {
   }
 
   private Node put(Key k, Value v, Node r) {
-    if (r == null) return new Node(k, v, null, null, null, null, null);
-    int cmp = k.compareTo(r.loKey);
-    if (cmp == 0) {
+    if (r == null) return new Node(k, v, null, null, null, null, null); compares++;
+    int cmp = k.compareTo(r.loKey); compares++;
+    if (cmp == 0) { compares++;
       r.loVal = v;
       return r;
-    } else if (cmp < 0) r.left = put(k, v, r.left);
-    if (r.hiKey == null) {
+    } else if (cmp < 0) r.left = put(k, v, r.left); compares++;
+    if (r.hiKey == null) {  compares++;
       r.hiKey = k;
       r.hiVal = v;
       return r;
     }
-    cmp = k.compareTo(r.hiKey);
-    if (cmp == 0) {
+    cmp = k.compareTo(r.hiKey); compares++;
+    if (cmp == 0) { compares++;
       r.loVal = v;
       return r;
-    } else if (cmp > 0) r.right = put(k, v, r.right);
+    } else if (cmp > 0) r.right = put(k, v, r.right); compares++;
     return r.mid = put(k, v, r.mid);
   }
 /*

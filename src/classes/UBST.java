@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.Queue;
 public class UBST<Key extends Comparable<Key>, Value> {
 
   private Node root;
+  private long compares = 0;
 
   private class Node{
     private Key key;
@@ -20,6 +21,8 @@ public class UBST<Key extends Comparable<Key>, Value> {
       assert key != null && value != null;
     }
   }
+
+  public long getCompares() { return compares; }
 
   public boolean isEmpty() { return root == null; }
 
@@ -37,11 +40,11 @@ public class UBST<Key extends Comparable<Key>, Value> {
   }
 
   private Value get(Key k, Node r) {
-    if (r == null) return null;
-    int cmp = k.compareTo(r.key);
-    if (cmp == 0) return r.value;
-    if (cmp < 0) return get(k, r.left);
-    else return get(k, r.right);
+    if (r == null) return null; compares++;
+    int cmp = k.compareTo(r.key); compares++;
+    if (cmp == 0) return r.value; compares ++;
+    if (cmp < 0) return get(k, r.left); compares++;
+    return get(k, r.right);
   }
 
   public void put(Key k, Value v) {
@@ -51,15 +54,14 @@ public class UBST<Key extends Comparable<Key>, Value> {
   }
 
   private Node put(Key k, Value v, Node r) {
-    if (r == null) return new Node(k, v, null, null);
-    int cmp = k.compareTo(r.key);
-    if (cmp == 0) {
+    if (r == null) return new Node(k, v, null, null); compares++;
+    int cmp = k.compareTo(r.key); compares++;
+    if (cmp == 0) { compares++;
       r.value = v;
       return r;
     }
-    if (cmp < 0) { r.left = put(k, v, r.left); }
-    else { r.right = put(k, v, r.right); }
-    return r;
+    if (cmp < 0) { r.left = put(k, v, r.left); }  compares++;
+    return r.right = put(k, v, r.right);
   }
   /*
   public static void main(String[] args)  {

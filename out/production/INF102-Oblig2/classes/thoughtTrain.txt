@@ -1,0 +1,7 @@
+Since I couldn't find the "tinyTale.txt" in the data of alg4's database to test on my searchCompare class I'll have to
+make a small example myself. I've already written one sentence and since I stated that fact I guess this is the second
+sentence. In other words: This is beginning to become quite the lengthy text document. It's just such a shame that it
+should be filled with such a base message. On the other hand, the computer hardly cares if the document contains a bunch
+of mumbo jumbo or if it contained Shakespears sonnets. When I think about it, the same can be said for some people.
+Indeed, how many us can truly appreciate Shakespears sonnets? I'm not sure if I can. I think that concludes this train
+of thought. Fare thee well, curious reader.
